@@ -31,11 +31,13 @@ public class BinlogTableExample {
             "  user_name STRING, " +
             "  mobile STRING, " +
             "  password STRING, " +
-            "  create_time STRING " +
+            "  create_time STRING, " +
+            "  PRIMARY KEY (user_id) NOT ENFORCED" +
             ") WITH ( " +
-            "  'connector' = 'kafka', " +
+            "  'connector' = 'upsert-kafka', " +
             "  'topic' = 'mysql_binlog', " +
             "  'properties.bootstrap.servers' = '127.0.0.1:9092', " +
+            "  'key.format' = 'json', " +
             "  'value.format' = 'json' " +
             ")" +
             "");

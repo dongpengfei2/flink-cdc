@@ -31,7 +31,7 @@ under the License.
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<flink.version>1.13.1</flink.version>
 		<cdc.version>1.4.0</cdc.version>
-
+		<changelogjson.version>1.5.0</changelogjson.version>
 		<fastjson.version>1.2.62</fastjson.version>
 
 		<target.java.version>1.8</target.java.version>
@@ -132,6 +132,12 @@ under the License.
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-json</artifactId>
 			<version>${flink.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba.ververica</groupId>
+			<artifactId>flink-format-changelog-json</artifactId>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

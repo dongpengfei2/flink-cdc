@@ -6,7 +6,7 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 /**
  * 读取kafka中canal json的数据，解析之后以json的方式存入kafka dwd层
  */
-public class KafkaTranslateJson {
+public class KafkaTranslateChangelogJson {
     public static void main(String[] args) {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         StreamTableEnvironment tableEnvironment = StreamTableEnvironment.create(env);
@@ -30,22 +30,20 @@ public class KafkaTranslateJson {
             "");
 
         tableEnvironment.executeSql("" +
-            "CREATE TABLE kafka_binlog ( " +
+            "CREATE TABLE dwd_binlog ( " +
             "  user_id INT, " +
             "  user_name STRING, " +
             "  mobile STRING, " +
             "  password STRING, " +
-            "  create_time STRING, " +
-            "  PRIMARY KEY (user_id) NOT ENFORCED" +
+            "  create_time STRING " +
             ") WITH ( " +
-            "  'connector' = 'upsert-kafka', " +
-            "  'topic' = 'mysql_binlog', " +
+            "  'connector' = 'kafka', " +
+            "  'topic' = 'dwd_binlog', " +
             "  'properties.bootstrap.servers' = '127.0.0.1:9092', " +
-            "  'key.format' = 'json', " +
-            "  'value.format' = 'json' " +
+            "  'format' = 'changelog-json'" +
             ")" +
             "");
 
-        tableEnvironment.executeSql("insert into kafka_binlog select * from ods_binlog");
+        tableEnvironment.executeSql("insert into dwd_binlog select * from ods_binlog");
     }
 }

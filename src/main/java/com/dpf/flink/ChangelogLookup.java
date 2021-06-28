@@ -30,6 +30,6 @@ public class ChangelogLookup {
             ")" +
             "");
 
-        tableEnvironment.executeSql("select data.* from dwd_binlog").print();
+        tableEnvironment.executeSql("select op, data.* from dwd_binlog where op='+I'").print();
     }
 }

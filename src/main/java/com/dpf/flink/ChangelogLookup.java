@@ -3,9 +3,6 @@ package com.dpf.flink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
-/**
- * 该方法的运行需要修改源码，添加format的源数据
- */
 public class ChangelogLookup {
     public static void main(String[] args) {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -13,11 +10,14 @@ public class ChangelogLookup {
 
         tableEnvironment.executeSql("" +
             "CREATE TABLE dwd_binlog ( " +
+            "op STRING," +
+            "  data ROW(" +
             "  user_id INT, " +
-            "  username STRING, " +
+            "  user_name STRING, " +
             "  mobile STRING, " +
             "  password STRING, " +
             "  create_time STRING " +
+            "   )" +
             ") WITH ( " +
             "  'connector' = 'kafka', " +
             "  'topic' = 'dwd_binlog', " +
@@ -26,10 +26,10 @@ public class ChangelogLookup {
             "  'properties.session.timeout.ms' = '90000', " +
             "  'properties.request.timeout.ms' = '325000', " +
             "  'scan.startup.mode' = 'earliest-offset' , " +
-            "  'value.format' = 'changelog-json' " +
+            "  'value.format' = 'json' " +
             ")" +
             "");
 
-        tableEnvironment.executeSql("select * from dwd_binlog").print();
+        tableEnvironment.executeSql("select data.* from dwd_binlog").print();
     }
 }
